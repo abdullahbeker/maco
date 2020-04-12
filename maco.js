@@ -9,7 +9,7 @@
         option = $(option);
         option.attr("id", id);
         let opt = $(`<button type="button" class="list-group-item list-group-item-action" id="${id}" data-maco-replace="${i}"></button>`);
-        opt.html(option.val());
+        opt.text(option.text());
         if(option.attr("selected") && (multiple || (!multiple && !assigned))){
           count++;
           opt.addClass("active");
@@ -28,7 +28,7 @@
       return { group, selectedText, count };
     },
     setDisplayText = (newValue, originalId) => {
-      $(`#maco-replace-${originalId}`).text(newValue);
+      $(`#maco-replace-display-${originalId}`).text(newValue);
     },
     renderSelf = (original, i) => {
       original = $(original);
@@ -36,37 +36,32 @@
       multiple = original.attr("multiple") === "multiple" ? true : false,
       search = original.data("search"),
       searchBox = $(`
-        <div class="maco-collapse-inner-search">
+        <div class="maco-dropdown-search">
           <input type="text" class="form-control shadow-none" />
         </div>
       `),
-      container = $(`<div class="maco"></div>`),
+      container = $(`<div class="${multiple ? "maco-multiple" : "maco"} dropdown"></div>`),
       { group, selectedText, count } = renderOptions(original, multiple, i),
       display = multiple ? `${count} adet seçildi` : selectedText,
       button = $(`
-        <button type="button" data-toggle="collapse" data-target="#maco-collapse-${i}" id="maco-replace-${i}" aria-expanded="false" class="btn-maco shadow-none form-control">
-          ${display}
+        <button type="button" data-toggle="dropdown" id="maco-replace-${i}" aria-expanded="false" class="btn-maco shadow-none form-control">
+          <span id="maco-replace-display-${i}">${display}</span>
           <span class="dropdown-toggle btn-maco-caret"></span>
         </button>
       `),
-      collapse = $(`
-        <div class="collapse" id="maco-collapse-${i}">
-        </div>
-      `),
-      inner = $(`
-        <div class="maco-collapse-inner">
+      dropdown = $(`
+        <div class="dropdown-menu maco-dropdown-menu" id="maco-dropdown-${i}">
         </div>
       `);
 
       searchBox.keyup(searchOnKeyUp);
 
-      if(search) inner.append(searchBox);
-      inner.append(group);
-      collapse.append(inner);
+      if(search) dropdown.append(searchBox);
+      dropdown.append(group);
       return {
         container,
         button,
-        collapse
+        dropdown
       };
     },
     toggleOnClick = (e) => {
@@ -143,13 +138,21 @@
     };
     this.each((i, el) => {
       let 
-        { container, button, collapse } = renderSelf(el, i),
+        { container, button, dropdown } = renderSelf(el, i),
         now = $(el);
       now.attr("id", `maco-${i}`);
       now
         .addClass("maco-original").wrap(container).after(button).next()
-        .after(collapse);
+        .after(dropdown);
     });
+
+    $(document).on("click", ".maco-multiple .dropdown-menu", (e) => { e.stopPropagation(); });
+    
     return this;
   };
 })(jQuery);
+
+
+/* $(document).on('click', '.maco-multiple .dropdown-menu', function (e) {
+  e.stopPropagation();
+}); */

@@ -17,28 +17,24 @@
   float: right;
 }
 
-.maco-collapse-inner{
-  border-left: 1px solid rgba(0,0,0,.125);
-  border-right: 1px solid rgba(0,0,0,.125);
-  border-bottom: 1px solid rgba(0,0,0,.125);
-  border-bottom-right-radius: 4px;
-  border-bottom-left-radius: 4px;
+.maco-dropdown-menu{
+  right: 0 !important;
   padding: 10px;
 }
 
-.maco-collapse-inner-search{
+.maco-dropdown-search{
   margin-bottom: 10px;
 }
 
-.maco-collapse-inner .list-group button:focus{
+.maco-dropdown-menu .list-group button:focus{
   outline: none !important;
 }
 
-.maco-collapse-inner .list-group .list-group-item{
+.maco-dropdown-menu .list-group .list-group-item{
   padding: 5px 12px;
 }
 
-.maco-collapse-inner .list-group .list-group-item.active{
+.maco-dropdown-menu .list-group .list-group-item.active{
   background-color: #be9811;
   border-color: #be9811;
 }
