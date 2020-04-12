@@ -14,7 +14,7 @@
           let opt = $(
               `<button type="button" class="list-group-item list-group-item-action" data-maco-replace-option="${j}" data-maco-replace="${nth}"></button>`
             ),
-            isSelected = option.is(":selected");
+            isSelected = option.attr("selected") === "selected" ? true : false;
           opt.text(option.text());
           if (option.is(":disabled")) opt.addClass("disabled");
           if (
@@ -99,7 +99,7 @@
               j = 1;
             for (j; j < opts.length; j++) {
               let opt = $(opts[j]);
-              if (opt.is(":selected")) {
+              if (opt.attr("selected") === "selected") {
                 return {
                   hasSelected: true,
                   selectedDataValue: opt.data("maco-original-option"),
@@ -112,18 +112,14 @@
           })(original);
 
         if (hasSelected && isActive) {
-          // Bunu deselect yap
           original.find(`[data-maco-original-option="${originalId + "-" + originalOptionSecond}"]`).removeAttr("selected");
           that.removeClass("active");
           setDisplayText("Hiçbiri seçilmedi", that.data("maco-replace"));
         } else if (!hasSelected && !isActive) {
-          // Bunu select yap
           original.find(`[data-maco-original-option="${originalId + "-" + originalOptionSecond}"]`).attr("selected", true);
           that.addClass("active");
           setDisplayText(that.text(), that.data("maco-replace"));
         } else if (hasSelected && !isActive) {
-          // Secilmisi deselect yap bunu select yap
-          console.log("third");
           original.find(`[data-maco-original-option="${selectedDataValue}"]`).removeAttr("selected");
           original.find(`[data-maco-original-option="${originalId + "-" + originalOptionSecond}"]`).attr("selected", true);
           that.parent().find(`[data-maco-replace-option="${selectedDataValue.split("-").pop()}"]`).removeClass("active");
@@ -142,13 +138,12 @@
               j = 1,
               count = 0;
             for (j; j < opts.length; j++) {
-              if ($(opts[j]).is(":selected")) count++;
+              if ($(opts[j]).attr("selected") === "selected") count++;
             }
             return count;
           })(original);
 
         if (isActive) {
-          console.log("m-first");
           original.find(`[data-maco-original-option="${originalId + "-" + originalOptionSecond}"]`).removeAttr("selected");
           that.removeClass("active");
           count--;
@@ -156,7 +151,6 @@
             setDisplayText("Hiçbiri seçilmedi", that.data("maco-replace")) :
             setDisplayText(`${count} adet seçildi`, that.data("maco-replace"));
         } else {
-          console.log("m-second");
           original.find(`[data-maco-original-option="${originalId + "-" + originalOptionSecond}"]`).attr("selected", true);
           that.addClass("active");
           count++;
