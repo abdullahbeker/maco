@@ -7,7 +7,7 @@
           count = 0;
       original.children().each((id, option) => {
         option = $(option);
-        option.attr("id", id);
+        option.attr("id", `maco-original-option-${id}`);
         let opt = $(`<button type="button" class="list-group-item list-group-item-action" id="${id}" data-maco-replace="${i}"></button>`);
         opt.text(option.text());
         if(option.attr("selected") && (multiple || (!multiple && !assigned))){
@@ -80,20 +80,20 @@
           })(original);
       
       if(hasSelected && isActive){
-        original.find(`#${selfId}`).removeAttr("selected");
+        original.find(`#maco-original-option-${selfId}`).removeAttr("selected");
         that.removeClass("active");
         setDisplayText("Hiçbiri seçilmedi", that.data("maco-replace"));
       }
       else if(!hasSelected && !isActive){
         // Bunu select yap
-        original.find(`#${selfId}`).attr("selected", "selected");
+        original.find(`#maco-original-option-${selfId}`).attr("selected", "selected");
         that.addClass("active");
         setDisplayText(that.text(), that.data("maco-replace"));
       }
       else if(hasSelected && !isActive){
         // Secilmisi deselect yap bunu select yap
-        original.find(`#${selectedId}`).removeAttr("selected");
-        original.find(`#${selfId}`).attr("selected", "selected");
+        original.find(`#maco-original-option-${selectedId}`).removeAttr("selected");
+        original.find(`#maco-original-option-${selfId}`).attr("selected", "selected");
         that.parent().find(`#${selectedId}`).removeClass("active");
         that.addClass("active");
         setDisplayText(that.text(), that.data("maco-replace"));
@@ -116,13 +116,13 @@
           })(original);
       
       if(isActive){
-        original.find(`#${selfId}`).removeAttr("selected");
+        original.find(`#maco-original-option-${selfId}`).removeAttr("selected");
         that.removeClass("active");
         count--;
         count === 0 ? setDisplayText("Hiçbiri seçilmedi", that.data("maco-replace")) : setDisplayText(`${count} adet seçildi`, that.data("maco-replace"));
       }
       else{
-        original.find(`#${selfId}`).attr("selected", "selected");
+        original.find(`#maco-original-option-${selfId}`).attr("selected", "selected");
         that.addClass("active");
         count++;
         setDisplayText(`${count} adet seçildi`, that.data("maco-replace"));
@@ -147,12 +147,7 @@
     });
 
     $(document).on("click", ".maco-multiple .dropdown-menu", (e) => { e.stopPropagation(); });
-    
+
     return this;
   };
 })(jQuery);
-
-
-/* $(document).on('click', '.maco-multiple .dropdown-menu', function (e) {
-  e.stopPropagation();
-}); */
